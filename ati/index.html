@@ -24,6 +24,8 @@
 				} else {
 					pageNumber = 1;
 				}
+				prevPage = pageNumber-1;
+				nextPage = pageNumber+1;
 				data = data[pageNumber];
 				$.each(data, function(index, value) {
 						$('#list tbody').append('<tr><td><a target="_blank" href="data/cards/'+index+'.html">'+
@@ -37,8 +39,8 @@
 				for (i=1;i<=pageCount;i++) {
 					$('#pagi').append('<li><a href="#'+ i + '">'+ i  +' </a></li>');
 				}
-				$('#prev').attr('href','#'+pageNumber-1);
-				$('#next').attr('href','#'+pageNumber+1);
+				$('#prev').attr('href','#'+prevPage);
+				$('#next').attr('href','#'+nextPage);
 
 				$('#pagi a').click(function(){
 					window.location.reload();
