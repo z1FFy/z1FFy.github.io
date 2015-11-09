@@ -6,23 +6,42 @@
 	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
 	<style> body {  padding: 5%;padding-top: 2%;  } </style>
+	<script>
+		$(document).ready(function(){
+			$.get(
+				"data/idlist.json",
+				onAjaxSuccess
+			);
+
+			function onAjaxSuccess(data) {
+				renderTable(data);
+			}
+			function renderTable(data) {
+				pageCount = Object.keys(data).length;
+				hash = window.location.hash;
+				if (hash >= 1 && hash<=pageCount) {
+					pageNumber = hash.slice(-1,2);
+				} else {
+					pageNumber = 1;
+				}
+				data = data[pageNumber];
+				$.each(data, function(index, value) {
+						$('#list tbody').append('<tr><td><a target="_blank" href="data/cards/'+index+'.html">'+
+								'<button type="button" class="btn btn-primary">Открыть</button></a>' + value.name + '</td>'+
+								'<td>' + value.city + '</td>'+
+								'<td>' + value.profile + '</td>'+
+								'<td>' + index + '</td>'
+
+						);
+				});
+			}
+		});
+	</script>
 </head>
 <body>
 <header>
 	<h1>ati.su Compaign List</h1>
 </header>
-<?php
-$file = file_get_contents('data/idlist.json');
-$list = json_decode($file,true);
-$pageCount = count($list);
-
-if (isset($_GET['page']) && $_GET['page']>=1 && $_GET['page']<=$pageCount) {
-$pageNumber = $_GET['page'];
-} else {
-$pageNumber = 1;
-}
-$list = $list[$pageNumber];
-?>
 <ul class="pagination pagination-lg">
 	<li><a href="?page=<?=$pageNumber-1 ?>" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
 	<? for ($i=1;$i<=$pageCount;$i++) { ?>
@@ -33,7 +52,7 @@ $list = $list[$pageNumber];
 	</li> <?} ?>
 	<li><a href="?page=<?=$pageNumber+1 ?>" aria-label="Next"><span aria-hidden="true">»</span></a></li>
 </ul>
-<table class="table table-hover table-bordered">
+<table id="list" class="table table-hover table-bordered">
 	<tbody>
 	<tr><td>Компания</td>
 		<td>Город</td>
