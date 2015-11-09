@@ -31,9 +31,14 @@
 								'<td>' + value.city + '</td>'+
 								'<td>' + value.profile + '</td>'+
 								'<td>' + index + '</td>'
-
 						);
 				});
+
+				for (i=1;i<=pageCount;i++) {
+					$('#pagi').append('<li><a href="#'+ i + '">'+ i  +' </a></li>');
+				}
+				$('#prev').attr('href','#'+pageNumber-1);
+				$('#next').attr('href','#'+pageNumber+1);
 			}
 		});
 	</script>
@@ -42,15 +47,9 @@
 <header>
 	<h1>ati.su Compaign List</h1>
 </header>
-<ul class="pagination pagination-lg">
-	<li><a href="?page=<?=$pageNumber-1 ?>" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-	<? for ($i=1;$i<=$pageCount;$i++) { ?>
-	<li>
-		<a href="?page=<?=$i?>">
-			<?=$i?>
-		</a>
-	</li> <?} ?>
-	<li><a href="?page=<?=$pageNumber+1 ?>" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+<ul id="pagi" class="pagination pagination-lg">
+	<li><a id="prev" href="" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+	<li><a id="next" href="" aria-label="Next"><span aria-hidden="true">»</span></a></li>
 </ul>
 <table id="list" class="table table-hover table-bordered">
 	<tbody>
@@ -58,14 +57,6 @@
 		<td>Город</td>
 		<td>Деятельность</td>
 		<td>ID</td></tr>
-	<?
-	foreach ($list as $key => $item) {
-	echo '<tr><td><a target="_blank" href="data/cards/'.$key.'.html"><button type="button" class="btn btn-primary">Открыть</button></a>  '. $item['name'] .'</td>';
-		echo '<td>'. $item['city'] .'</td>';
-		echo '<td>'. $item['profile'] .'</td>';
-		echo '<td>'. $key .'</td></tr>';
-	}
-	?>
 	</tbody>
 </table>
 
