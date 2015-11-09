@@ -18,9 +18,9 @@
 			}
 			function renderTable(data) {
 				pageCount = Object.keys(data).length;
-				hash = window.location.hash;
+				hash = parseInt(window.location.hash.slice(-1,2));
 				if (hash >= 1 && hash<=pageCount) {
-					pageNumber = hash.slice(-1,2);
+					pageNumber = hash;
 				} else {
 					pageNumber = 1;
 				}
@@ -40,6 +40,10 @@
 				$('#prev').attr('href','#'+pageNumber-1);
 				$('#next').attr('href','#'+pageNumber+1);
 			}
+
+			$('#prev,#next').click(function(){
+				window.location.reload();
+			})
 		});
 	</script>
 </head>
