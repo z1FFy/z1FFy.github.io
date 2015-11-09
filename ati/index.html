@@ -39,11 +39,12 @@
 				}
 				$('#prev').attr('href','#'+pageNumber-1);
 				$('#next').attr('href','#'+pageNumber+1);
+
+				$('#pagi a').click(function(){
+					window.location.reload();
+				})
 			}
 
-			$('#pagi a').click(function(){
-				window.location.reload();
-			})
 		});
 	</script>
 </head>
