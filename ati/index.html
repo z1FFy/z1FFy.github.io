@@ -1,12 +1,15 @@
 <html>
 <head>
 	<title>ati.su Compaigns</title>
+	<meta charset="utf-8">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://z1FFy.github.io\bootstrap-flatly.css">
 	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
 	<style> body {  padding: 5%;padding-top: 2%;  } </style>
 	<script>
+
 		$(document).ready(function(){
 			$.get(
 				"data/idlist.json",
@@ -17,30 +20,29 @@
 				renderTable(data);
 			}
 			function renderTable(data) {
-				pageCount = Object.keys(data).length;
-				hash = parseInt(window.location.hash.slice(-1,2));
-				if (hash >= 1 && hash<=pageCount) {
-					pageNumber = hash;
-				} else {
+				datas= data;
+				pageArr = Object.keys(data);
+				pageNumber = window.location.hash.slice(1);
+
+				if (pageNumber <= 1) {
 					pageNumber = 1;
 				}
-				prevPage = pageNumber-1;
-				nextPage = pageNumber+1;
+
 				data = data[pageNumber];
 				$.each(data, function(index, value) {
-						$('#list tbody').append('<tr><td><a target="_blank" href="data/cards/'+index+'.html">'+
-								'<button type="button" class="btn btn-primary">Открыть</button></a>  ' + value.name + '</td>'+
-								'<td>' + value.city + '</td>'+
-								'<td>' + value.profile + '</td>'+
-								'<td>' + index + '</td>'
-						);
+					$('#list tbody').append('<tr><td><a target="_blank" href="data/cards/'+index+'.html">'+
+						'<button type="button" class="btn btn-primary">Открыть</button></a>  ' + value.name + '</td>'+
+						'<td>' + value.city + '</td>'+
+						'<td>' + value.profile + '</td>'+
+						'<td>' + index + '</td>'
+					);
+				});
+				var i =0;
+				pageArr.forEach(function(num){
+					i++;
+					$('#pagi').append('<li><a href="#'+ parseInt(num) + '">'+ i +' </a></li>');
 				});
 
-				for (i=1;i<=pageCount;i++) {
-					$('#pagi').append('<li><a href="#'+ i + '">'+ i  +' </a></li>');
-				}
-				$('#prev').attr('href','#'+prevPage);
-				$('#next').attr('href','#'+nextPage);
 
 				$('#pagi a').click(function(){
 					window.location.reload();
@@ -55,8 +57,7 @@
 	<h1>ati.su Compaign List</h1>
 </header>
 <ul id="pagi" class="pagination pagination-lg">
-	<li><a id="prev" href="" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-	<li><a id="next" href="" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+
 </ul>
 <table id="list" class="table table-hover table-bordered">
 	<tbody>
