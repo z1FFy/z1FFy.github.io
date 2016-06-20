@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="https://z1FFy.github.io\bootstrap-flatly.css">
 	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
-	<style> body {  padding: 5%;padding-top: 2%;  } </style>
+	<style> body {  padding: 15%;padding-top: 2%;  } </style>
 	<script>
 
 		$(document).ready(function(){
@@ -20,6 +20,9 @@
 				renderTable(data);
 			}
 			function renderTable(data) {
+				data.forEach(function(num){
+
+				});
 				datas= data;
 				pageArr = Object.keys(data);
 				pageNumber = window.location.hash.slice(1);
@@ -28,21 +31,49 @@
 					pageNumber = 1;
 				}
 
-				data = data[pageNumber];
-				$.each(data, function(index, value) {
-					$('#list tbody').append('<tr><td><a target="_blank" href="data/cards/'+index+'.html">'+
-						'<button type="button" class="btn btn-primary">' + value.name + '</button></a></td>'+
-						'<td>' + value.city + '</td>'+
-						'<td>' + value.profile + '</td>'+
-						'<td>' + index + '</td>'
-					);
-				});
 				var i =0;
+				page = 0;
 				pageArr.forEach(function(num){
 					i++;
-					$('#pagi').append('<li><a href="#'+ parseInt(num) + '">'+ i +' </a></li>');
+					if (i<=pageArr.length/100) {
+						page++;
+						if (pageNumber == page) currentPage = true;
+						else currentPage = false;
+						if ((currentPage))
+							liStyle = ' style="background-color:#2F7366;" ';
+						else
+							liStyle = '';
+
+
+						$('#pagi').append('<li><a '+ liStyle + ' href="#' + parseInt(page) + '">' + i + ' </a></li>');
+					}
 				});
 
+
+				$.each(data, function(index, value) {
+					if (index <= pageNumber*100 ) {
+						if (pageNumber!=1) {
+							if (index>= (pageNumber*100) - (pageNumber - (pageNumber-1))*100) {
+								addPage = true;
+							} else {
+								addPage = false;
+							}
+						}
+
+						if (pageNumber == 1)
+							addPage = true;
+
+						if (addPage)
+							$('#list tbody').append('<tr><td><a target="_blank" href="data/cards/' + value.id + '.html">' +
+								'<button type="button" class="btn btn-primary">' + value.name + '</button></a></td>' +
+								'<td>' + value.city + '</td>' +
+								'<td>' + value.profile + '</td>' +
+								'<td>' + value.id + '</td>');
+					}
+				});
+
+
+				$('header').append('В базе ' + pageArr.length + ' компаний');
 
 				$('#pagi a').click(function(){
 					window.location.reload();
@@ -54,9 +85,10 @@
 </head>
 <body>
 <header>
-	<h1>ati.su Compaign List</h1>
+	<h1 style="display: inline-block">ati.su</h1> <b style="color: #bbb">Parsed <small>v.2</small></b></h2><small style="float: right">by <a href="http://z1web.ru/">@ziffyweb</a></small>
+	<h3>Рейтинг перевозчиков, экспедиторов и грузовладельцев</h3>
 </header>
-<ul id="pagi" class="pagination pagination-lg">
+<ul id="pagi" class="pagination pagination-sm">
 
 </ul>
 <table id="list" class="table table-hover table-bordered">
