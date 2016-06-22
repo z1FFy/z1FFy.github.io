@@ -17,20 +17,12 @@
 			);
 
 			function onAjaxSuccess(data) {
+				pageNumber = window.location.hash.slice(1);
+				renderPagination(Object.keys(data));
 				renderTable(data);
 			}
-			function renderTable(data) {
-				data.forEach(function(num){
 
-				});
-				datas= data;
-				pageArr = Object.keys(data);
-				pageNumber = window.location.hash.slice(1);
-
-				if (pageNumber <= 1) {
-					pageNumber = 1;
-				}
-
+			function renderPagination(pageArr) {
 				var i =0;
 				page = 0;
 				pageArr.forEach(function(num){
@@ -48,7 +40,13 @@
 						$('#pagi').append('<li><a '+ liStyle + ' href="#' + parseInt(page) + '">' + i + ' </a></li>');
 					}
 				});
+			}
 
+			function renderTable(data) {
+
+				if (pageNumber <= 1) {
+					pageNumber = 1;
+				}
 
 				$.each(data, function(index, value) {
 					if (index <= pageNumber*100 ) {
@@ -73,7 +71,7 @@
 				});
 
 
-				$('header').append('В базе ' + pageArr.length + ' компаний');
+				$('header').append('В базе ' + Object.keys(data).length + ' компаний');
 
 				$('#pagi a').click(function(){
 					window.location.reload();
